@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	// "github.com/0ussamabernou/go-site-checker/view/view"
+	"github.com/0ussamabernou/go-site-checker/view/view"
 	"github.com/labstack/echo/v4"
 )
 
