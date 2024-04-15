@@ -1,34 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"html"
-	"io"
-	"net/http"
+	"log"
 
-	"github.com/a-h/templ"
+	"github.com/labstack/echo/v4"
 )
 
 func main() {
-	component := hello("You")
+	e := echo.New()
+	e.GET("/", root)
 
-	go http.Handle("/", templ.Handler(component))
-	// go http.Handle("/foo", fooHandler)
-
-	go http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.Method))
-	})
-
-	port := "1323"
-	fmt.Println("Listening on port: ", port)
-	http.ListenAndServe(":"+port, nil)
+	log.Fatal(e.Start(":1323"))
 }
-func check() string {
-	resp, err := http.Get("http://example.com/")
-	if err != nil {
-		// handle error
-	}
-	defer resp.Body.Close()
-	body, err := io.ReadAll(resp.Body)
-	return string(body)
+
+func root(c echo.Context) error {
+	return hello("You").Render(c.Request().Context(), c.Response())
 }
